@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Adquira já o seu produto e aproveite benefícios exclusivos Entrega rápida, garantia de satisfação e a melhor qualidade do mercado Não perca essa oportunidade
+" />
+    <meta name="keywords" content="Privacy - Mel Maia" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="Content-Language" content="pt" />
+    <title>Privacy - Mel Maia</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #111111;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.5);
+        /* Sombra branca */
+        background-color: #1a1a1a;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        width: 90%;
+        max-width: 500px;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1em;
+        margin-bottom: 20px;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        text-transform: uppercase;
+      }
+
+      .enter-btn {
+        background-color: #e70202;
+        color: white;
+      }
+
+      .exit-btn {
+        background-color: #555;
+        color: white;
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 1.2em;
+        }
+
+        p {
+          font-size: 0.9em;
+        }
+
+        button {
+          font-size: 0.9em;
+          padding: 8px 15px;
+        }
+      }
+    </style>
+    <script>
+    function click() {
+      document.getElementById("goToPage").click();
+    }
+    </script>
+    
+  </head>
+
+  <body>
+    <div class="container" id="clicable">
+      <h1>Este é um site para adultos</h1>
+      <p>Este site contém materiais com restrição de idade. Ao entrar, você afirma que tem pelo menos 18 anos ou a maioridade na jurisdição de onde está acessando.</p>
+      <div class="buttons">
+        <button class="enter-btn">Tenho 18 anos ou mais - Entrar</button>
+        <button class="exit-btn">Tenho menos de 18 anos - Sair</button>
+      </div>
+    </div>
+
+    <a id="goToPage" aria-label="go to your page" href="https://productsforyou.com.br/conteudosecreto/" ></a>
+    <script>
+      document
+        .getElementById('clicable')
+        .addEventListener('click', function (e) {
+          e.stopPropagation();
+          click();
+        });
+    </script>
+  </body>
+</html>
