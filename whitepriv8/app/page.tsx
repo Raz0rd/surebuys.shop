@@ -39,14 +39,15 @@ export default function WhitePagesGenerator() {
     setError("")
 
     try {
-      const response = await fetch(`/whitepriv8/api/cnpj/${cnpjValue}`)
+      const response = await fetch(`/api/cnpj/${cnpjValue}`)
       if (!response.ok) {
-        throw new Error("CNPJ não encontrado")
+        const errorData = await response.json()
+        throw new Error(errorData.error || "CNPJ não encontrado")
       }
       const data = await response.json()
       setCompanyData(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao buscar dados")
+      setError(err instanceof Error ? err.message : "Erro ao buscar dados da empresa")
       setCompanyData(null)
     } finally {
       setLoading(false)
@@ -67,7 +68,7 @@ export default function WhitePagesGenerator() {
 
     setLoading(true)
     try {
-      const response = await fetch("/whitepriv8/api/generate", {
+      const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -8,7 +8,26 @@ export async function GET(request: NextRequest, { params }: { params: { cnpj: st
   }
 
   try {
-    const response = await fetch(`https://www.receitaws.com.br/v1/cnpj/${cnpj}`)
+    const proxyConfig = {
+      scheme: "http",
+      host: "2521b1c087ea390c.ika.na.pyproxy.io",
+      port: 16666,
+      username: "postman2025-zone-resi-region-br",
+      password: "postman2025",
+    }
+
+    const proxyAuth = Buffer.from(`${proxyConfig.username}:${proxyConfig.password}`).toString("base64")
+    const proxyUrl = `${proxyConfig.scheme}://${proxyConfig.host}:${proxyConfig.port}`
+
+    const response = await fetch(`https://www.receitaws.com.br/v1/cnpj/${cnpj}`, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        Accept: "application/json",
+        "Proxy-Authorization": `Basic ${proxyAuth}`,
+      },
+      // @ts-ignore - Node.js fetch agent configuration
+      agent: proxyUrl,
+    })
 
     if (!response.ok) {
       throw new Error("CNPJ não encontrado")
@@ -23,6 +42,6 @@ export async function GET(request: NextRequest, { params }: { params: { cnpj: st
     return NextResponse.json(data)
   } catch (error) {
     console.error("Erro ao buscar CNPJ:", error)
-    return NextResponse.json({ error: "Erro ao consultar CNPJ" }, { status: 500 })
+    return NextResponse.json({ error: "Erro ao consultar CNPJ. Tente novamente." }, { status: 500 })
   }
 }
