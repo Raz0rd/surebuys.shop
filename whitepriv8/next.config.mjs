@@ -2,7 +2,6 @@
 const nextConfig = {
   basePath: '/whitepriv8',
   assetPrefix: '/whitepriv8',
-  output: 'export',
   trailingSlash: true,
   eslint: {
     ignoreDuringBuilds: true,
@@ -13,9 +12,9 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  experimental: {
-    optimizeCss: false
-  }
+  poweredByHeader: false,
+  compress: true,
+  generateEtags: false
 }
 
 export default nextConfig
