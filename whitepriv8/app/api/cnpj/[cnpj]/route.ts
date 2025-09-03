@@ -11,34 +11,56 @@ export async function GET(request: NextRequest, { params }: { params: { cnpj: st
   }
 
   try {
-    const proxyConfig = {
-      host: "2521b1c087ea390c.ika.na.pyproxy.io",
-      port: "16666",
-      username: "postman2025-zone-resi-region-br",
-      password: "postman2025",
-    }
-
-    console.log("[v0] Making request to ReceitaWS with proxy")
-
-    const proxyUrl = `http://${proxyConfig.username}:${proxyConfig.password}@${proxyConfig.host}:${proxyConfig.port}`
+    console.log("[v0] Making request to ReceitaWS API")
 
     const response = await fetch(`https://www.receitaws.com.br/v1/cnpj/${cnpj}`, {
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (compatible; WhitePages Generator/1.0)",
         Accept: "application/json",
-        "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
+        "Accept-Language": "pt-BR,pt;q=0.9",
         "Cache-Control": "no-cache",
+        Referer: "https://www.receitaws.com.br/",
+        Origin: "https://www.receitaws.com.br",
       },
-      // @ts-ignore - Vercel Edge Runtime proxy configuration
-      proxy: proxyUrl,
+      method: "GET",
     })
 
     console.log("[v0] ReceitaWS response status:", response.status)
 
     if (!response.ok) {
       console.log("[v0] ReceitaWS response not ok:", response.statusText)
-      throw new Error("CNPJ não encontrado")
+
+      console.log("[v0] Trying alternative CNPJ API")
+      const altResponse = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (compatible; WhitePages Generator/1.0)",
+          Accept: "application/json",
+        },
+      })
+
+      if (altResponse.ok) {
+        const altData = await altResponse.json()
+        console.log("[v0] BrasilAPI data received:", altData.razao_social || "No razao_social field")
+
+        const convertedData = {
+          nome: altData.razao_social || altData.nome_fantasia,
+          fantasia: altData.nome_fantasia,
+          cnpj: altData.cnpj,
+          logradouro: altData.logradouro,
+          numero: altData.numero,
+          bairro: altData.bairro,
+          municipio: altData.municipio,
+          uf: altData.uf,
+          cep: altData.cep,
+          telefone: altData.ddd_telefone_1,
+          email: altData.email,
+          atividade_principal: altData.cnae_fiscal_descricao ? [{ text: altData.cnae_fiscal_descricao }] : [],
+        }
+
+        return NextResponse.json(convertedData)
+      }
+
+      throw new Error("CNPJ não encontrado em nenhuma API")
     }
 
     const data = await response.json()
