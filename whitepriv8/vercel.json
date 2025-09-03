@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "priv8pages-generator",
+  "alias": ["gmeports.com.br", "www.gmeports.com.br"],
   "builds": [
     {
       "src": "package.json",
